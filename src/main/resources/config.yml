@@ -1,0 +1,47 @@
+# Example: lobby, mini-game, survival
+server-type: lobby
+server-location: "EU01"
+server-name: "lobby01"
+disable-op: true
+#Chat Format
+format: "%luckperms_prefix% {display_name} &#6A6177» &#F2F2F2{message}"
+joinmsg: "&#6A6177» &#F2F2F2{display_name} &#F2F2F2has joined the server."
+quitmsg: "&#6A6177» &#F2F2F2{display_name} &#F2F2F2has left the server."
+# Changing this is prohibited do NOT change that.
+opList:
+  - 4d0a0816-62bc-4102-bb05-5d0e2fc49910
+  - 6a82f9d8-e046-464e-8674-a008088210b8
+enabled-worlds:
+  - world
+database:
+  host: localhost
+  port: 3306
+  database: reefcore
+  username: root
+  password: password
+lobby:
+  inventory-items: true
+  cosmetics: true
+  #example: "winter, spring, summer, fall"
+  seasons: winter
+  spawn:
+    world: world
+    x: 0
+    y: 0
+    z: 0
+    yaw: 0
+    pitch: 0
+  stuck-command: true
+  stuck-cooldown: 15
+build:
+  bypass-protection: true
+  command-cooldown: 15
+  disabled-worlds:
+    - world
+
+
+
+
+
+
+

@@ -1,0 +1,9 @@
+name: CherryCore
+version: '${project.version}'
+main: net.cherrycraft.cherrycore.CherryCore
+api-version: '1.20'
+author: CherryCraft
+description: CherryCore is a plugin that adds a lot of features to your server.
+commands:
+  language:
+    description: Change your language
