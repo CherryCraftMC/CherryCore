@@ -26,6 +26,7 @@ public final class CherryCore extends JavaPlugin {
         languageManager.loadAllLanguages();
         Loader.registerCommands(this);
         Loader.registerListeners(this);
+        Loader.registerTasks(this);
         Loader.loadWorlds(this);
         logger.info("ReefCore has been enabled.");
     }
