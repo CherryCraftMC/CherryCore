@@ -2,26 +2,27 @@ package net.cherrycraft.cherrycore.tablist;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.cherrycraft.cherrycore.CherryCore;
+import net.cherrycraft.cherrycore.chatsystem.utils.RankColors;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tablist implements Listener {
 
     static MiniMessage miniMessage = MiniMessage.builder().build();
     static LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
-
-    private final Map<UUID, ArmorStand> armorStands = new HashMap<>();
+    private final LuckPerms luckPerms = LuckPermsProvider.get();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -32,23 +33,48 @@ public class Tablist implements Listener {
         player.setPlayerListHeader(header);
         player.setPlayerListFooter(footer);
 
-        // Get or create a team for the player
-        org.bukkit.scoreboard.Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-        Team team = scoreboard.getTeam(player.getName());
-        if (team == null) {
-            team = scoreboard.registerNewTeam(player.getName());
-        }
-
-        // Add the player to the team
-        team.addEntry(player.getName());
-
-        // Schedule a repeating task that updates the team's prefix and suffix every 5 seconds
-        Team finalTeam = team;
+        // Schedule a repeating task that updates the tablist every second
         Bukkit.getScheduler().runTaskTimerAsynchronously(CherryCore.getInstance(), () -> {
-            String prefix = PlaceholderAPI.setPlaceholders(player, "%luckperms_prefix% ");
-            String suffix = PlaceholderAPI.setPlaceholders(player, " %luckperms_suffix%");
-            finalTeam.setPrefix(prefix);
-            finalTeam.setSuffix(suffix);
-        }, 0L, 100L); // 100 ticks = 5 seconds
+            // Get a list of all online players
+            List<Player> players = Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
+
+            // Sort the players based on their ranks
+            players.sort(Comparator.comparingInt(player1 -> {
+                String primaryGroup = luckPerms.getUserManager().getUser(player1.getUniqueId()).getPrimaryGroup();
+                RankColors rankColor = RankColors.valueOf(primaryGroup.toUpperCase());
+                return rankColor.getPriority();
+            }));
+
+            // Update the tablist
+            for (int i = 0; i < players.size(); i++) {
+                Player p = players.get(i);
+                org.bukkit.scoreboard.Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+                String primaryGroup = luckPerms.getUserManager().getUser(p.getUniqueId()).getPrimaryGroup();
+                Team team = scoreboard.getTeam(primaryGroup);
+                if (team == null) {
+                    team = scoreboard.registerNewTeam(primaryGroup);
+                }
+
+                // Remove the player from their current team, if any
+                for (Team existingTeam : scoreboard.getTeams()) {
+                    if (existingTeam.hasEntry(p.getName())) {
+                        existingTeam.removeEntry(p.getName());
+                    }
+                }
+
+                // Add the player to the team
+                team.addEntry(p.getName());
+
+                // Update the team's prefix and suffix
+                String prefix = PlaceholderAPI.setPlaceholders(p, "%luckperms_prefix% ");
+                String suffix = PlaceholderAPI.setPlaceholders(p, " %luckperms_suffix%");
+                team.setPrefix(prefix);
+                team.setSuffix(suffix);
+
+                // Update the team's display name
+                RankColors rankColor = RankColors.valueOf(primaryGroup.toUpperCase());
+                team.setDisplayName(rankColor.getColor());
+            }
+        }, 0L, 20L); // 20 ticks = 1 second
     }
 }
