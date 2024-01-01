@@ -2,6 +2,11 @@ package net.cherrycraft.cherrycore;
 
 import net.cherrycraft.cherrycore.chatsystem.ChatHistoryLogger;
 import net.cherrycraft.cherrycore.chatsystem.ChatSystem;
+import net.cherrycraft.cherrycore.commands.gamemode.GMCommands;
+import net.cherrycraft.cherrycore.commands.gamemode.sepperateCommands.GamemodeAdventure;
+import net.cherrycraft.cherrycore.commands.gamemode.sepperateCommands.GamemodeCreative;
+import net.cherrycraft.cherrycore.commands.gamemode.sepperateCommands.GamemodeSpectator;
+import net.cherrycraft.cherrycore.commands.gamemode.sepperateCommands.GamemodeSurvival;
 import net.cherrycraft.cherrycore.languageSystem.command.LanguageCommand;
 import net.cherrycraft.cherrycore.manager.CommandManager;
 import net.cherrycraft.cherrycore.manager.LanguageManager;
@@ -15,6 +20,11 @@ public class Loader implements Listener {
 
     public static void registerCommands(CherryCore plugin) {
         registeredCommand(new LanguageCommand("language"), plugin);
+        registeredCommand(new GMCommands("gm"), plugin);
+        registeredCommand(new GamemodeCreative("gmc"), plugin);
+        registeredCommand(new GamemodeSurvival("gms"), plugin);
+        registeredCommand(new GamemodeAdventure("gma"), plugin);
+        registeredCommand(new GamemodeSpectator("gmsp"), plugin);
     }
 
 
