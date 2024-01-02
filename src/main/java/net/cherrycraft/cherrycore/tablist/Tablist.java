@@ -2,7 +2,7 @@ package net.cherrycraft.cherrycore.tablist;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.cherrycraft.cherrycore.CherryCore;
-import net.cherrycraft.cherrycore.chatsystem.utils.RankColors;
+import net.cherrycraft.cherrycore.chatsystem.utils.RankUtil;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.LuckPerms;
@@ -41,7 +41,7 @@ public class Tablist implements Listener {
             // Sort the players based on their ranks
             players.sort(Comparator.comparingInt(player1 -> {
                 String primaryGroup = luckPerms.getUserManager().getUser(player1.getUniqueId()).getPrimaryGroup();
-                RankColors rankColor = RankColors.valueOf(primaryGroup.toUpperCase());
+                RankUtil rankColor = RankUtil.valueOf(primaryGroup.toUpperCase());
                 return rankColor.getPriority();
             }));
 
@@ -72,7 +72,7 @@ public class Tablist implements Listener {
                 team.setSuffix(suffix);
 
                 // Update the team's display name
-                RankColors rankColor = RankColors.valueOf(primaryGroup.toUpperCase());
+                RankUtil rankColor = RankUtil.valueOf(primaryGroup.toUpperCase());
                 team.setDisplayName(rankColor.getColor());
             }
         }, 0L, 20L); // 20 ticks = 1 second
