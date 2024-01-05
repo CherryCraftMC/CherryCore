@@ -72,6 +72,7 @@ public class Tablist implements Listener {
                 team.setSuffix(suffix);
 
                 // Update the team's display name
+                RankUtil rankColor = RankUtil.fromGroupName(primaryGroup);
                 RankUtil rankColor = RankUtil.valueOf(primaryGroup.toUpperCase());
                 team.setDisplayName(rankColor.getColor());
             }
