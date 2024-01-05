@@ -45,7 +45,6 @@ public enum RankUtil {
         }
         throw new IllegalArgumentException("No enum constant " + RankUtil.class.getCanonicalName() + "." + groupName);
     }
-
     public @Nullable Group getLPRank() {
         return LuckPermsProvider.get().getGroupManager().getGroup(this.groupName);
     }
