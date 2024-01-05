@@ -11,6 +11,7 @@ import static net.cherrycraft.cherrycore.chatsystem.utils.PlayerValidator.isPlay
 public class GamemodeAdventure extends CommandManager {
     public GamemodeAdventure(String commandName) {
         super("gma");
+        setPermission("cherrycore.gamemode");
     }
 
     @Override

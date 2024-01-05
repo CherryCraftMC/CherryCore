@@ -37,6 +37,15 @@ public enum RankUtil {
         return Integer.compare(rank1.getPriority(), rank2.getPriority());
     }
 
+    public static RankUtil fromGroupName(String groupName) {
+        for (RankUtil rank : RankUtil.values()) {
+            if (rank.groupName.equalsIgnoreCase(groupName)) {
+                return rank;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant " + RankUtil.class.getCanonicalName() + "." + groupName);
+    }
+
     public @Nullable Group getLPRank() {
         return LuckPermsProvider.get().getGroupManager().getGroup(this.groupName);
     }
