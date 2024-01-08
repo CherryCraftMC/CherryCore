@@ -5,7 +5,7 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import com.github.stefvanschie.inventoryframework.pane.util.Slot;
 import net.cherrycraft.cherrycore.languageSystem.data.LanguageData;
-import net.cherrycraft.cherrycore.manager.CommandManager;
+import net.cherrycraft.cherrycore.manager.Command;
 import net.cherrycraft.cherrycore.manager.LanguageManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class LanguageCommand extends CommandManager {
+public class LanguageCommand extends Command {
 
     MiniMessage miniMessage = MiniMessage.builder().build();
     LegacyComponentSerializer serializer = LegacyComponentSerializer.legacySection();
@@ -35,7 +35,7 @@ public class LanguageCommand extends CommandManager {
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             LanguageManager language = new LanguageManager();
@@ -80,8 +80,20 @@ public class LanguageCommand extends CommandManager {
             }
             gui.addPane(pane);
             gui.show(player);
+            return true;
         } else {
             System.out.println("This command can only be executed by players.");
+            return false;
         }
+    }
+
+    @Override
+    public String getPermission() {
+        return null;
+    }
+
+    @Override
+    public String getPermissionMessage() {
+        return null;
     }
 }

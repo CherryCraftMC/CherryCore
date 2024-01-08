@@ -1,7 +1,10 @@
 package net.cherrycraft.cherrycore;
 
+import net.cherrycraft.cherrycore.command.CommandManager;
 import net.cherrycraft.cherrycore.database.MySQL;
+import net.cherrycraft.cherrycore.listener.CommandListener;
 import net.cherrycraft.cherrycore.manager.LanguageManager;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,8 +14,11 @@ public final class CherryCore extends JavaPlugin {
 
     static CherryCore instance;
     private final YamlConfiguration conf = new YamlConfiguration();
-    Logger logger = Logger.getLogger("ReefCore");
+    Logger logger = Logger.getLogger("CheeryCore");
     LanguageManager languageManager = new LanguageManager();
+
+    private CommandManager commandManager;
+    private CommandListener commandListener;
 
     public static CherryCore getInstance() {
         return instance;
@@ -24,10 +30,16 @@ public final class CherryCore extends JavaPlugin {
         this.saveDefaultConfig();
         loadDatabase();
         languageManager.loadAllLanguages();
-        Loader.registerCommands(this);
-        Loader.registerListeners(this);
+
+        // Managers
+        commandManager = new CommandManager(this);
+
+        // Listeners
+        commandListener = new CommandListener(this);
+
+        new Loader(this);
         Loader.loadWorlds(this);
-        logger.info("ReefCore has been enabled.");
+        logger.info("CherryCore has been enabled.");
     }
 
     @Override
@@ -49,4 +61,11 @@ public final class CherryCore extends JavaPlugin {
     }
 
 
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+
+    public CommandExecutor getCommandListener() {
+        return commandListener;
+    }
 }
