@@ -16,28 +16,29 @@
  *  For inquiries, please contact CherryCraft at copyright@cherrycraft.net.
  */
 
-package net.cherrycraft.cherrycore.listener;
+package net.cherrycraft.cherrycore.command.commands;
 
-import net.cherrycraft.cherrycore.CherryCore;
-import net.cherrycraft.cherrycore.command.CommandManager;
-import org.bukkit.command.CommandExecutor;
+import net.cherrycraft.cherrycore.manager.Command;
 import org.bukkit.command.CommandSender;
 
-public class CommandListener implements CommandExecutor {
-
-    private final CherryCore plugin;
-    private CommandManager commandManager;
-
-    public CommandListener(CherryCore plugin) {
-        this.plugin = plugin;
-        this.commandManager = plugin.getCommandManager();
+public class Test extends Command {
+    public Test(String commandName) {
+        super("test");
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String commandname, String[] args) {
-        if (this.commandManager == null) {
-            this.commandManager = new CommandManager(this.plugin);
-        }
-        return commandManager.runCommand(sender, commandname, args);
+    public boolean execute(CommandSender sender, String[] args) {
+        System.out.println("Test execute");
+        return true;
+    }
+
+    @Override
+    public String getPermission() {
+        return null;
+    }
+
+    @Override
+    public String getPermissionMessage() {
+        return null;
     }
 }

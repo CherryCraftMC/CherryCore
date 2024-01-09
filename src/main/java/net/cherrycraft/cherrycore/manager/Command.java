@@ -11,7 +11,14 @@ public abstract class Command {
         this.commandName = commandName;
     }
 
-    public abstract boolean execute(CommandSender sender, String[] args);
+    public boolean execute(CommandSender sender, String[] args) {
+        try {
+            return execute(sender, args);
+        } catch (Exception e) {
+
+            return false;
+        }
+    }
 
     public String getCommandName() {
         return commandName;

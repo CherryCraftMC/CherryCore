@@ -21,6 +21,7 @@ package net.cherrycraft.cherrycore.command;
 import net.cherrycraft.cherrycore.CherryCore;
 import net.cherrycraft.cherrycore.command.commands.*;
 import net.cherrycraft.cherrycore.languageSystem.command.LanguageCommand;
+import net.cherrycraft.cherrycore.listener.CommandListener;
 import net.cherrycraft.cherrycore.manager.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
@@ -44,12 +45,14 @@ public class CommandManager {
         registerCommand(new GamemodeSurvival("gms"));
         registerCommand(new GamemodeAdventure("gma"));
         registerCommand(new GamemodeSpectator("gmsp"));
+        registerCommand(new Test("test"));
     }
 
     private void registerCommand(Command command) {
-        PluginCommand pluginCommand = plugin.getCommand(command.getCommandName());
+        PluginCommand pluginCommand = plugin.getServer().getPluginCommand(command.getCommandName());
         if (pluginCommand != null) {
-            pluginCommand.setExecutor(plugin.getCommandListener());
+
+            pluginCommand.setExecutor(new CommandListener(plugin));
             commands.add(command);
             ((Plugin) plugin).getLogger().info("Command '" + command.getCommandName() + "' has been registered.");
         } else {
@@ -57,11 +60,9 @@ public class CommandManager {
         }
     }
 
-    public boolean runCommand(CommandSender sender, String label, String[] args) {
-        System.out.println("Attempting to run command: " + label);
+    public boolean runCommand(CommandSender sender, String commandname, String[] args) {
         for (Command command : commands) {
-            System.out.println(command.getCommandName() + "=" + label);
-            if (command.getCommandName().equalsIgnoreCase(label)) {
+            if (command.getCommandName().equalsIgnoreCase(commandname)) {
                 String permission = command.getPermission();
                 if (permission != null && !sender.hasPermission("cherrycore." + permission)) {
                     sender.sendMessage("<red>" + command.getPermissionMessage());

@@ -45,7 +45,7 @@ public final class CherryCore extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        logger.info("ReefCore has been disabled.");
+        logger.info("CherryCore has been disabled.");
     }
 
     void loadDatabase() {
