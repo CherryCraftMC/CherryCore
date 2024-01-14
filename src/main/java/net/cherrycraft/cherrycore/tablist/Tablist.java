@@ -14,9 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class Tablist implements Listener {
 
@@ -27,8 +28,8 @@ public class Tablist implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        String header = serializer.serialize(miniMessage.deserialize("<#C81F3B><bold>Cherry<#31AF14><bold>Craft"));
-        String footer = serializer.serialize(miniMessage.deserialize("<#31AF14>play.cherrycraft.net"));
+        String header = serializer.serialize(miniMessage.deserialize(Objects.requireNonNull(CherryCore.getInstance().getConfig().getString("tablist.header"))));
+        String footer = serializer.serialize(miniMessage.deserialize(Objects.requireNonNull(CherryCore.getInstance().getConfig().getString("tablist.footer"))));
 
         player.setPlayerListHeader(header);
         player.setPlayerListFooter(footer);
@@ -36,11 +37,11 @@ public class Tablist implements Listener {
         // Schedule a repeating task that updates the tablist every second
         Bukkit.getScheduler().runTaskTimerAsynchronously(CherryCore.getInstance(), () -> {
             // Get a list of all online players
-            List<Player> players = Bukkit.getOnlinePlayers().stream().collect(Collectors.toList());
+            List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
 
             // Sort the players based on their ranks
             players.sort(Comparator.comparingInt(player1 -> {
-                String primaryGroup = luckPerms.getUserManager().getUser(player1.getUniqueId()).getPrimaryGroup();
+                String primaryGroup = Objects.requireNonNull(luckPerms.getUserManager().getUser(player1.getUniqueId())).getPrimaryGroup();
                 RankUtil rankColor = RankUtil.valueOf(primaryGroup.toUpperCase());
                 return rankColor.getPriority();
             }));
@@ -49,7 +50,7 @@ public class Tablist implements Listener {
             for (int i = 0; i < players.size(); i++) {
                 Player p = players.get(i);
                 org.bukkit.scoreboard.Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-                String primaryGroup = luckPerms.getUserManager().getUser(p.getUniqueId()).getPrimaryGroup();
+                String primaryGroup = Objects.requireNonNull(luckPerms.getUserManager().getUser(p.getUniqueId())).getPrimaryGroup();
                 Team team = scoreboard.getTeam(primaryGroup);
                 if (team == null) {
                     team = scoreboard.registerNewTeam(primaryGroup);
