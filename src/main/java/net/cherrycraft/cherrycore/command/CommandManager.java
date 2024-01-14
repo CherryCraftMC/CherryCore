@@ -19,7 +19,7 @@
 package net.cherrycraft.cherrycore.command;
 
 import net.cherrycraft.cherrycore.CherryCore;
-import net.cherrycraft.cherrycore.command.commands.*;
+import net.cherrycraft.cherrycore.command.commands.Test;
 import net.cherrycraft.cherrycore.languageSystem.command.LanguageCommand;
 import net.cherrycraft.cherrycore.listener.CommandListener;
 import net.cherrycraft.cherrycore.manager.Command;
@@ -40,11 +40,6 @@ public class CommandManager {
         this.plugin = plugin;
 
         registerCommand(new LanguageCommand("language"));
-        registerCommand(new GMCommands("gm"));
-        registerCommand(new GamemodeCreative("gmc"));
-        registerCommand(new GamemodeSurvival("gms"));
-        registerCommand(new GamemodeAdventure("gma"));
-        registerCommand(new GamemodeSpectator("gmsp"));
         registerCommand(new Test("test"));
     }
 

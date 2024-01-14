@@ -7,6 +7,9 @@ disable-op: true
 format: "%luckperms_prefix% {display_name} &#6A6177» &#F2F2F2{message}"
 joinmsg: "&#6A6177» &#F2F2F2{display_name} &#F2F2F2has joined the server."
 quitmsg: "&#6A6177» &#F2F2F2{display_name} &#F2F2F2has left the server."
+tablist:
+  header: "<#C81F3B><bold>Cherry<#31AF14><bold>Craft"
+  footer: "<#31AF14>play.cherrycraft.net"
 # Changing this is prohibited do NOT change that.
 opList:
   - 4d0a0816-62bc-4102-bb05-5d0e2fc49910
