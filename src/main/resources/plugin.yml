@@ -7,16 +7,20 @@ description: CherryCore is a plugin that adds a lot of features to your server.
 commands:
   language:
     description: Changes the language
-  gm:
-    description: Changes the game mode
-  gmc:
-    description: Changes the game mode to creative
-  gms:
-    description: Changes the game mode to survival
-  gma:
-    description: Changes the game mode to adventure
-  gmsp:
-    description: Changes the game mode to spectator
   test:
     description: Test command
+  gm:
+    description: Changes the game mode
+  fly:
+    description: Changes the fly mode
+  vanish:
+    description: Vanish command
+  build:
+    description: Build command
+  lobby:
+    description: Lobby build command
+  setspawn:
+    description: Sets the spawn
+
+
 
